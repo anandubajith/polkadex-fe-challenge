@@ -1,4 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
+import SearchIcon from '../search.svg'
 import styled from "styled-components";
 import { useState } from 'react';
 import TokenCardList from './TokenCardList';
@@ -12,6 +13,7 @@ const SearchBarWrapper = styled(motion.div)`
     margin:auto;
     background: #000;
     color:#fff;
+text-align: left;
     background-clip: padding-box;
     border: solid 2px transparent;
     border-radius: 24px;
@@ -43,14 +45,22 @@ const ButtonWrapper = styled(motion.button)`
     border-radius: 24px;
     position: relative;
     display: flex;
+    flex-direction: column;
 `;
 const SearchButton = styled(motion.div)`
-    width: 64px;
+    box-sizing: border-box;
+    min-width: 64px;
     height: 64px;
     border-radius: 16px;
     outline: 0;
     border:0;
-    background: rgba(139, 161, 190, 0.2);
+    ${({ active }) => `background: ${active ? '#E6007A' : 'rgba(139, 161, 190, 0.2)'};`}
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    padding: 20px;
 `;
 
 const FloatingCard = styled(motion.div)`
@@ -137,14 +147,21 @@ export default function SearchBar() {
             </AnimatePresence>
             <SearchBarWrapper active={isActive}>
                 <ButtonWrapper onClick={handleClick('token')} active={currentButton === 'token'}>
-                    Any token {selectedToken}
+                    <div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any token</div>
+                    <div style={{ display: 'block', fontSize: '22px' }}>{selectedToken === '' ? 'Select token' : selectedToken}</div>
                 </ButtonWrapper>
                 <ButtonWrapper onClick={handleClick('chain')} active={currentButton === 'chain'}>
-                    Any chain
+                    <div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any Chain</div>
+                    <div style={{ display: 'block', fontSize: '22px' }}>{selectedChain === '' ? 'Select Chain' : selectedChain}</div>
                 </ButtonWrapper>
-                <ButtonWrapper style={{ flex: 2, width: '100%', borderRight: 0 }} onClick={handleClick('amount')} >
-                    <span style={{ paddingLeft: '24px', flex: 1 }}>Any amount</span>
-                    <SearchButton>
+                <ButtonWrapper style={{ flex: 2, width: '100%', borderRight: 0, flexDirection: 'row' }} onClick={handleClick('amount')} >
+                    <div style={{ flex: '1' }}>
+                        <div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any amount</div>
+                        <div style={{ fontSize: '22px' }}>Filter by amount</div>
+                    </div>
+                    <SearchButton active={isActive}>
+                        <img src={SearchIcon} />
+                        {isActive ? 'Search' : null}
                     </SearchButton>
                 </ButtonWrapper>
             </SearchBarWrapper>
