@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import SearchIcon from '../search.svg'
+import SearchIcon from '../assets/search.svg'
 import styled from "styled-components";
 import { useState } from 'react';
 import TokenCardList from './TokenCardList';

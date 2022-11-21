@@ -1,15 +1,17 @@
 import styled from "styled-components";
+import EthereumLogo from '../assets/ethereum.svg'
+import CardanoLogo from '../assets/cardano.svg'
 
 const TOKENS = [
     {
         name: 'Ethereum',
         ticker: 'ETH',
-        image: ''
+        image: EthereumLogo
     },
     {
         name: 'Cardano',
         ticker: 'ADA',
-        image: ''
+        image: CardanoLogo
     }
 ]
 
