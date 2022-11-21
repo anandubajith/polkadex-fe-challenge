@@ -19,6 +19,7 @@ const TokenCard = styled.div`
     width: 160px;
     height: 200px;
     box-sizing: border-box;
+    cursor: pointer;
     ${({ active }) => `border: 1px solid  ${active ? '#000' : '#ccc'};`}
     border-radius: 20px;
     display: flex;

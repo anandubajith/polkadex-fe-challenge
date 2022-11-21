@@ -1,13 +1,14 @@
 import { motion, AnimatePresence } from "framer-motion";
 import SearchIcon from '../assets/search.svg'
 import styled from "styled-components";
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import TokenCardList from './TokenCardList';
 import ChainSelectList from './ChainSelectList';
 import AmountRangeSelector from './AmountRangeSelector'
 
 const SearchBarWrapper = styled(motion.div)`
     width: clamp(50%, 700px, 90%);
+    cursor: pointer;
     height: 90px;
     box-sizing: border-box;
     margin:auto;
@@ -19,7 +20,8 @@ text-align: left;
     border-radius: 24px;
     padding: 12px;
     position: relative;
-    display: flex;
+display: grid;
+grid-template-columns: 1fr 1fr 2fr;
       &:before {
           content: '';
           position: absolute;
@@ -34,7 +36,7 @@ text-align: left;
 const ButtonWrapper = styled(motion.button)`
     flex: 1;
     display:flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     border-right: 1px solid rgba(139, 161, 190, 0.2) ;
     background: inherit;
@@ -62,7 +64,7 @@ const SearchButton = styled(motion.div)`
     font-size: 18px;
     padding: 20px;
     img {
-        margin-right: 8px;
+        ${({ active }) => `margin-right: ${active ? '8px' : '0px'};`}
     }
 `;
 
@@ -85,15 +87,23 @@ const FloatingCardHeader = styled.h1`
 
 
 export default function SearchBar() {
+    const amountRef = useRef();
+    const chainRef = useRef();
+    const tokenRef = useRef();
     const [currentButton, setCurrentButton] = useState('')
     const [translation, setTranslation] = useState({ x: 0, y: 0, scale: 0 })
     const [selectedToken, setSelectedToken] = useState('')
     const [selectedChain, setSelectedChain] = useState('')
     const isActive = currentButton !== ''
 
+    const getTargetNode = (button) => {
+        if (button == 'token') return tokenRef.current;
+        if (button == 'chain') return chainRef.current;
+        if (button == 'amount') return amountRef.current;
+    }
     const handleClick = (button) => (e) => {
-        console.log()
-        const targetNode = e.target;
+        console.log(e)
+        const targetNode = getTargetNode(button)
         const { top, left, bottom, right } = targetNode.getBoundingClientRect();
         const xCenter = (left + right) / 2
         const yCenter = (top + bottom) / 2
@@ -147,16 +157,16 @@ export default function SearchBar() {
                 <FloatingCard animate={translation} > {renderContent()} </FloatingCard>
             </AnimatePresence>
             <SearchBarWrapper active={isActive}>
-                <ButtonWrapper onClick={handleClick('token')} active={currentButton === 'token'}>
+                <ButtonWrapper onClick={handleClick('token')} active={currentButton === 'token'} ref={tokenRef}>
                     <div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any token</div>
                     <div style={{ display: 'block', fontSize: '18px' }}>{selectedToken === '' ? 'Select token' : selectedToken}</div>
                 </ButtonWrapper>
-                <ButtonWrapper onClick={handleClick('chain')} active={currentButton === 'chain'}>
+                <ButtonWrapper onClick={handleClick('chain')} active={currentButton === 'chain'} ref={chainRef}>
                     <div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any Chain</div>
                     <div style={{ display: 'block', fontSize: '18px' }}>{selectedChain === '' ? 'Select Chain' : selectedChain}</div>
                 </ButtonWrapper>
-                <ButtonWrapper style={{ flex: 2, width: '100%', borderRight: 0, flexDirection: 'row' }} onClick={handleClick('amount')} >
-                    <div style={{ flex: '1' }}>
+                <ButtonWrapper style={{ flex: 2, width: '100%', borderRight: 0, flexDirection: 'row' }} onClick={handleClick('amount')} ref={amountRef}>
+                    <div style={{ flex: '1', textAlign: 'left', display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center', alignItems: 'flex-start' }}>
                         <div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any amount</div>
                         <div style={{ fontSize: '18px' }}>Filter by amount</div>
                     </div>
