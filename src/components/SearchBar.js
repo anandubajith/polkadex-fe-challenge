@@ -59,8 +59,11 @@ const SearchButton = styled(motion.div)`
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
+    font-size: 18px;
     padding: 20px;
+    img {
+        margin-right: 8px;
+    }
 `;
 
 const FloatingCard = styled(motion.div)`
@@ -87,8 +90,6 @@ export default function SearchBar() {
     const [selectedToken, setSelectedToken] = useState('')
     const [selectedChain, setSelectedChain] = useState('')
     const isActive = currentButton !== ''
-
-
 
     const handleClick = (button) => (e) => {
         console.log()
@@ -148,16 +149,16 @@ export default function SearchBar() {
             <SearchBarWrapper active={isActive}>
                 <ButtonWrapper onClick={handleClick('token')} active={currentButton === 'token'}>
                     <div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any token</div>
-                    <div style={{ display: 'block', fontSize: '22px' }}>{selectedToken === '' ? 'Select token' : selectedToken}</div>
+                    <div style={{ display: 'block', fontSize: '18px' }}>{selectedToken === '' ? 'Select token' : selectedToken}</div>
                 </ButtonWrapper>
                 <ButtonWrapper onClick={handleClick('chain')} active={currentButton === 'chain'}>
                     <div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any Chain</div>
-                    <div style={{ display: 'block', fontSize: '22px' }}>{selectedChain === '' ? 'Select Chain' : selectedChain}</div>
+                    <div style={{ display: 'block', fontSize: '18px' }}>{selectedChain === '' ? 'Select Chain' : selectedChain}</div>
                 </ButtonWrapper>
                 <ButtonWrapper style={{ flex: 2, width: '100%', borderRight: 0, flexDirection: 'row' }} onClick={handleClick('amount')} >
                     <div style={{ flex: '1' }}>
                         <div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any amount</div>
-                        <div style={{ fontSize: '22px' }}>Filter by amount</div>
+                        <div style={{ fontSize: '18px' }}>Filter by amount</div>
                     </div>
                     <SearchButton active={isActive}>
                         <img src={SearchIcon} />
