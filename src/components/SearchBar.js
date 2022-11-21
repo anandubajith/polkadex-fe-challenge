@@ -90,6 +90,7 @@ export default function SearchBar() {
     const amountRef = useRef();
     const chainRef = useRef();
     const tokenRef = useRef();
+    const floatingCardRef = useRef();
     const [currentButton, setCurrentButton] = useState('')
     const [translation, setTranslation] = useState({ x: 0, y: 0, scale: 0 })
     const [selectedToken, setSelectedToken] = useState('')
@@ -107,7 +108,8 @@ export default function SearchBar() {
         const { top, left, bottom, right } = targetNode.getBoundingClientRect();
         const xCenter = (left + right) / 2
         const yCenter = (top + bottom) / 2
-        setTranslation({ x: xCenter - 200, y: yCenter - 410 })
+        const {offsetWidth, offsetHeight} = floatingCardRef.current;
+        setTranslation({ x: xCenter - (offsetWidth/2), y: yCenter - (offsetHeight + 64)})
         if (currentButton == button) {
             setCurrentButton('')
             setTranslation({ scale: 0, x: xCenter - 200, y: yCenter - 150 })
@@ -154,7 +156,7 @@ export default function SearchBar() {
     return (
         <>
             <AnimatePresence>
-                <FloatingCard animate={translation} > {renderContent()} </FloatingCard>
+                <FloatingCard ref={floatingCardRef} animate={translation} > {renderContent()} </FloatingCard>
             </AnimatePresence>
             <SearchBarWrapper active={isActive}>
                 <ButtonWrapper onClick={handleClick('token')} active={currentButton === 'token'} ref={tokenRef}>
