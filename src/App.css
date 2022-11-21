@@ -1,6 +1,21 @@
 @import-normalize;
+
+* {
+    box-sizing: border-box !important;
+}
+
 body {
+    margin: 0;
     font-family: CircularStd;
     font-weight: 400;
-    background: #0a0a0c;
+    background: #121316;
+    color: #fff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+

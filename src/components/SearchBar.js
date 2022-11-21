@@ -14,14 +14,14 @@ const SearchBarWrapper = styled(motion.div)`
     margin:auto;
     background: #000;
     color:#fff;
-text-align: left;
+    text-align: left;
     background-clip: padding-box;
     border: solid 2px transparent;
     border-radius: 24px;
     padding: 12px;
     position: relative;
-display: grid;
-grid-template-columns: 1fr 1fr 2fr;
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
       &:before {
           content: '';
           position: absolute;
@@ -51,8 +51,8 @@ const ButtonWrapper = styled(motion.button)`
 `;
 const SearchButton = styled(motion.div)`
     box-sizing: border-box;
-    min-width: 64px;
-    height: 64px;
+    min-width: 58px;
+    height: 58px;
     border-radius: 16px;
     outline: 0;
     border:0;
@@ -69,12 +69,11 @@ const SearchButton = styled(motion.div)`
 `;
 
 const FloatingCard = styled(motion.div)`
-    width: 400px;
-    min-height: 300px;
     background: white;
     position: absolute;
     border-radius: 24px;
     padding: 24px;
+    color: #000;
 `;
 const FloatingCardHeader = styled.h1`
     font-weight: 450;
@@ -95,6 +94,7 @@ export default function SearchBar() {
     const [translation, setTranslation] = useState({ x: 0, y: 0, scale: 0 })
     const [selectedToken, setSelectedToken] = useState('')
     const [selectedChain, setSelectedChain] = useState('')
+    const [amount, setAmount] = useState({ min: 0, max: 10 })
     const isActive = currentButton !== ''
 
     const getTargetNode = (button) => {
@@ -103,27 +103,31 @@ export default function SearchBar() {
         if (button == 'amount') return amountRef.current;
     }
     const handleClick = (button) => (e) => {
-        console.log(e)
+        if (currentButton == button) {
+            setCurrentButton('')
+            setTranslation({ scale: 0 }) //todo: bring to center
+            return;
+        }
         const targetNode = getTargetNode(button)
         const { top, left, bottom, right } = targetNode.getBoundingClientRect();
         const xCenter = (left + right) / 2
         const yCenter = (top + bottom) / 2
-        const {offsetWidth, offsetHeight} = floatingCardRef.current;
-        setTranslation({ x: xCenter - (offsetWidth/2), y: yCenter - (offsetHeight + 64)})
-        if (currentButton == button) {
-            setCurrentButton('')
-            setTranslation({ scale: 0, x: xCenter - 200, y: yCenter - 150 })
-            return;
-        }
+
+        const y = floatingCardRef.current.getBoundingClientRect().top;
+        const { offsetWidth: cardWidth, offsetHeight: cardHeight } = floatingCardRef.current;
+        //setTranslation({ x: top - 100, y: yCenter})
+        setTranslation({ x: 400, y: y - 310 })
         setCurrentButton(button)
     }
 
     const handleTokenSelect = (ticker) => {
         setSelectedToken(ticker)
+        handleClick('chain')(chainRef)
         // navigate to next page
     }
     const handleChainSelect = (chain) => {
         setSelectedChain(chain);
+        handleClick('amount')(amountRef)
         // navigate to next page
     }
 
@@ -146,7 +150,7 @@ export default function SearchBar() {
             return (
                 <>
                     <FloatingCardHeader>Filter by amount</FloatingCardHeader>
-                    <AmountRangeSelector />
+                    <AmountRangeSelector value={amount} onChange={setAmount} />
                 </>
             )
         }
@@ -156,21 +160,21 @@ export default function SearchBar() {
     return (
         <>
             <AnimatePresence>
-                <FloatingCard ref={floatingCardRef} animate={translation} > {renderContent()} </FloatingCard>
+                <FloatingCard animate={translation} > <div ref={floatingCardRef}>{renderContent()} </div></FloatingCard>
             </AnimatePresence>
             <SearchBarWrapper active={isActive}>
                 <ButtonWrapper onClick={handleClick('token')} active={currentButton === 'token'} ref={tokenRef}>
                     <div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any token</div>
-                    <div style={{ display: 'block', fontSize: '18px' }}>{selectedToken === '' ? 'Select token' : selectedToken}</div>
+                    {isActive && <div style={{ display: 'block', fontSize: '18px' }}>{selectedToken === '' ? 'Select token' : selectedToken}</div>}
                 </ButtonWrapper>
                 <ButtonWrapper onClick={handleClick('chain')} active={currentButton === 'chain'} ref={chainRef}>
                     <div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any Chain</div>
-                    <div style={{ display: 'block', fontSize: '18px' }}>{selectedChain === '' ? 'Select Chain' : selectedChain}</div>
+                    {isActive && <div style={{ display: 'block', fontSize: '18px' }}>{selectedChain === '' ? 'Select Chain' : selectedChain}</div>}
                 </ButtonWrapper>
                 <ButtonWrapper style={{ flex: 2, width: '100%', borderRight: 0, flexDirection: 'row' }} onClick={handleClick('amount')} ref={amountRef}>
                     <div style={{ flex: '1', textAlign: 'left', display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center', alignItems: 'flex-start' }}>
                         <div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any amount</div>
-                        <div style={{ fontSize: '18px' }}>Filter by amount</div>
+                        {isActive && <div style={{ fontSize: '18px' }}>Filter by amount</div>}
                     </div>
                     <SearchButton active={isActive}>
                         <img src={SearchIcon} />

@@ -8,6 +8,7 @@ const CHAINS = [
 const ChainSelectButton = styled.div`
     box-sizing: border-box;
     width: 100%;
+    min-width: 400px;
     border-radius: 20px;
     margin-bottom: 12px;
     cursor: pointer;
