@@ -33,7 +33,7 @@ const ButtonWrapper = styled(motion.div)`
     border:0;
     background: inherit;
     color: #fff;
-    padding: 12px;
+    padding: 12px 24px;
     background-clip: padding-box;
     border-top: 2px solid transparent;
     border-right: 2px solid rgba(139, 161, 190, 0.2) ;
@@ -45,6 +45,7 @@ const ButtonWrapper = styled(motion.div)`
     z-index: 4;
     text-align: left;
     align-items: flex-start;
+    &:last-of-type { padding-right: 12px; }
     ${({ active }) => !active && `border-radius: 0;`}
     ${({ active }) => !active && `&:nth-child(2) { border-top-left-radius: 24px;border-bottom-left-radius: 24px;}`}
     ${({ active }) => !active && `&:last-of-type { border-top-right-radius: 24px;border-bottom-right-radius: 24px;}`}
@@ -76,6 +77,15 @@ const FloatingCardHeader = styled.h1`
     line-height: 20px;
     margin-bottom: 24px;
 `
+
+function ButtonContent({ active, label, value, placeholder }) {
+    return (
+        <>
+            <motion.div animate={{ opacity: active ? '0.5' : '1', fontSize: active ? '16px' : '20px' }}>{label}</motion.div>
+            {active && <motion.div animate={{ display: 'block', fontSize: '18px' }}>{value === '' ? placeholder : value}</motion.div>}
+        </>
+    )
+}
 
 
 export default function SearchBar() {
@@ -126,18 +136,18 @@ export default function SearchBar() {
         // todo: consider cardWidth?
         const { offsetHeight: cardHeight } = floatingCardRef.current;
         const targetNode = getTargetNode(currentButton)
-        setTranslation({  x: searchBarRef.current.offsetLeft + targetNode.offsetLeft, y: searchBarRef.current.offsetTop - cardHeight - 90, scale: 1 })
+        setTranslation({ x: searchBarRef.current.offsetLeft + targetNode.offsetLeft, y: searchBarRef.current.offsetTop - cardHeight - 90, scale: 1 })
         setMovingBorderPos({ x: targetNode.offsetLeft, width: targetNode.offsetWidth + 4 })
     }, [currentButton])
 
 
     const handleTokenSelect = (ticker) => {
         setSelectedToken(ticker)
-        handleClick('chain')(chainRef)
+        handleClick('chain')()
     }
     const handleChainSelect = (chain) => {
         setSelectedChain(chain);
-        handleClick('amount')(amountRef)
+        handleClick('amount')()
     }
 
     const renderContent = () => {
@@ -170,24 +180,33 @@ export default function SearchBar() {
         <>
             <AnimatePresence>
                 <FloatingCard animate={translation} transition={{ bounce: 0 }}>
-                    <motion.div layoutId="card-content" ref={floatingCardRef}>{renderContent()}</motion.div>
+                    <motion.div layoutId="card-content" ref={floatingCardRef}>
+                        {renderContent()}
+                    </motion.div>
                 </FloatingCard>
             </AnimatePresence>
             <SearchBarWrapper active={isActive} ref={searchBarRef}>
                 <MovingBorder layoutId="border" animate={movingBorderPos} transition={{ bounce: 0 }} />
                 <ButtonWrapper onClick={handleClick('token')} active={currentButton === 'token'} ref={tokenRef} >
-                    <motion.div animate={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any token</motion.div>
-                    {isActive && <motion.div animate={{ display: 'block', fontSize: '18px' }}>{selectedToken === '' ? 'Select token' : selectedToken}</motion.div>}
+                    <ButtonContent
+                        active={isActive} label="Any token"
+                        placeholder="Select Token" value={selectedToken} />
                 </ButtonWrapper>
-                <ButtonWrapper onClick={handleClick('chain')} active={currentButton === 'chain'} ref={chainRef} animate={{ margin: isActive ? '0 2px' : 0 }}>
-                    <motion.div animate={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any Chain</motion.div>
-                    {isActive && <motion.div animate={{ display: 'block', fontSize: '18px' }}>{selectedChain === '' ? 'Select Chain' : selectedChain}</motion.div>}
+                <ButtonWrapper
+                    onClick={handleClick('chain')}
+                    active={currentButton === 'chain'} ref={chainRef}
+                    animate={{ margin: isActive ? '0 2px' : 0 }}>
+                    <ButtonContent
+                        active={isActive} label="Any Chain"
+                        placeholder="Select Chain" value={selectedChain} />
                 </ButtonWrapper>
-                <ButtonWrapper style={{ flex: 2, width: '100%', flexDirection: 'row' }} active={currentButton === 'amount'} onClick={handleClick('amount')} ref={amountRef}>
-                    <motion.div animate={{ flex: '1', display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center', alignItems: 'flex-start' }}>
-                        <motion.div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any amount</motion.div>
-                        {isActive && <motion.div animate={{ fontSize: '18px' }}>Filter by amount</motion.div>}
-                    </motion.div>
+                <ButtonWrapper
+                    onClick={handleClick('amount')}
+                    active={currentButton === 'amount'} ref={amountRef}
+                    style={{ flex: 2, width: '100%', flexDirection: 'row' }}>
+                    <div style={{ flex: '1', display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center', alignItems: 'flex-start' }}>
+                        <ButtonContent active={isActive} label="Any amount" placeholder="Filter by amount" value="" />
+                    </div>
                     <SearchButton active={isActive} />
                 </ButtonWrapper>
             </SearchBarWrapper>
