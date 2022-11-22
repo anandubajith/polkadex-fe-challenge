@@ -49,6 +49,17 @@ const ButtonWrapper = styled(motion.button)`
     display: flex;
     flex-direction: column;
 `;
+
+
+const MovingBorder = styled.div`
+          content: '';
+          position: absolute;
+          top: 0; right: 0; bottom: 0; left: 0;
+          z-index: -1;
+          margin: -2px; /* !important */
+              border-radius: inherit; /* !important */
+              background: linear-gradient(to right, #E6007A, #6745D2);
+`
 const SearchButton = styled(motion.div)`
     box-sizing: border-box;
     min-width: 58px;
@@ -163,6 +174,7 @@ export default function SearchBar() {
                 <FloatingCard animate={translation} > <div ref={floatingCardRef}>{renderContent()} </div></FloatingCard>
             </AnimatePresence>
             <SearchBarWrapper active={isActive}>
+        <MovingBorder />
                 <ButtonWrapper onClick={handleClick('token')} active={currentButton === 'token'} ref={tokenRef}>
                     <div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any token</div>
                     {isActive && <div style={{ display: 'block', fontSize: '18px' }}>{selectedToken === '' ? 'Select token' : selectedToken}</div>}

@@ -28,7 +28,9 @@ function Stepper({ value, onChange, minValue, maxValue }) {
     return (
         <StepperWrapper>
             <button onClick={() => onChange(Math.min(value + 1, maxValue))}>+</button>
-            <div>{value}</div>
+            <input type="text"
+                value={value} style={{ width: '50px', border: 0, outline: 0, textAlign: 'center' }}
+                pattern="[0-9.]+" onChange={e => onChange(e.target.value)} />
             <button onClick={() => onChange(Math.max(minValue, value - 1))}>-</button>
         </StepperWrapper>
     )
