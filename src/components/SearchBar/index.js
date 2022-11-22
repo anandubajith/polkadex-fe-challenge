@@ -67,6 +67,7 @@ const SearchButton = styled(motion.button)`
     height: 58px;
     border-radius: 16px;
     outline: 0;
+color:#fff;
     border:0;
     ${({ active }) => `background: ${active ? '#E6007A' : 'rgba(139, 161, 190, 0.2)'};`}
     cursor: pointer;
@@ -195,7 +196,7 @@ export default function SearchBar() {
                     <motion.div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any token</motion.div>
                     {isActive && <motion.div style={{ display: 'block', fontSize: '18px' }}>{selectedToken === '' ? 'Select token' : selectedToken}</motion.div>}
                 </ButtonWrapper>
-                <ButtonWrapper onClick={handleClick('chain')} active={currentButton === 'chain'} ref={chainRef} style={{ margin: '0 2px' }}>
+                <ButtonWrapper onClick={handleClick('chain')} active={currentButton === 'chain'} ref={chainRef} style={{ margin: isActive ? '0 2px' : 0 }}>
                     <motion.div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any Chain</motion.div>
                     {isActive && <div style={{ display: 'block', fontSize: '18px' }}>{selectedChain === '' ? 'Select Chain' : selectedChain}</div>}
                 </ButtonWrapper>
