@@ -150,7 +150,7 @@ export default function SearchBar() {
         if (currentButton === '') {
             const { offsetLeft, offsetWidth, offsetTop, offsetHeight } = searchBarRef.current;
             setTranslation({ scale: 0, x: offsetLeft + (offsetWidth / 2), y: offsetTop - (offsetHeight / 2) })
-            setMovingBorderPos({ x: 0, width: 'calc(100% + 4px)' })
+            setMovingBorderPos({ x: 0, width: '100%' })
             return;
         };
         // todo: consider cardWidth?
