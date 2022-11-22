@@ -104,21 +104,24 @@ export default function SearchBar() {
     const amountRef = useRef();
     const chainRef = useRef();
     const tokenRef = useRef();
+    const searchBarRef = useRef();
     const floatingCardRef = useRef();
     const [currentButton, setCurrentButton] = useState('')
-    const [initialPos, setInitialPos] = useState({ x: 0, y: 0 })
-    const [translation, setTranslation] = useState({ x: 0, y: 0, originX: 1 })
+    const [translation, setTranslation] = useState({ x: 0, y: 0, scale: 1 })
     const [selectedToken, setSelectedToken] = useState('')
     const [selectedChain, setSelectedChain] = useState('')
     const [amount, setAmount] = useState({ min: 0, max: 10 })
     const [movingBorderPos, setMovingBorderPos] = useState({ x: 0 })
     const isActive = currentButton !== ''
 
-    // useEffect(() => {
-    //     setInitialPos({
-    //         x: 10, y:100, scale: 0.5
-    //     })
-    // }, [floatingCardRef])
+    useEffect(() => {
+        const element = searchBarRef.current;
+        console.log(element.offsetLeft);
+        console.log(element.offsetTop);
+        setTranslation({ ...translation, x: element.offsetLeft, y: element.offsetTop - 300 })
+
+    }, [searchBarRef])
+
 
     const getTargetNode = (button) => {
         if (button == 'token') return tokenRef.current;
@@ -128,24 +131,25 @@ export default function SearchBar() {
     const handleClick = (button) => (e) => {
         if (currentButton == button) {
             setCurrentButton('')
-            setTranslation({ scale: 0 }) //todo: bring to center
-            setMovingBorderPos({ x: 0, width: 'calc(100% + 4px)' })
             return;
         }
-
-        const targetNode = getTargetNode(button)
-        setMovingBorderPos({ x: targetNode.offsetLeft, width: targetNode.offsetWidth + 4 })
-
-        const { top, left, bottom, right } = targetNode.getBoundingClientRect();
-        const xCenter = (left + right) / 2
-        const yCenter = (top + bottom) / 2
-
-        const y = floatingCardRef.current.getBoundingClientRect().top;
-        const { offsetWidth: cardWidth, offsetHeight: cardHeight } = floatingCardRef.current;
-        //setTranslation({ x: top - 100, y: yCenter})
-        setTranslation({ x: xCenter - (cardWidth / 2), y: yCenter - 350 })
         setCurrentButton(button)
     }
+
+    useEffect(() => {
+        if (currentButton == '') {
+            const { offsetLeft, offsetWidth, offsetTop, offsetHeight } = searchBarRef.current;
+            setTranslation({ scale: 0, x: offsetLeft + (offsetWidth / 2), y: offsetTop + (offsetHeight / 2) })
+            setMovingBorderPos({ x: 0, width: 'calc(100% + 4px)' })
+            return;
+        };
+        const { offsetWidth: cardWidth, offsetHeight: cardHeight } = floatingCardRef.current;
+        console.log({ cardWidth, cardHeight })
+        const targetNode = getTargetNode(currentButton)
+        console.log(targetNode.offsetLeft)
+        setTranslation({ ...translation, x: searchBarRef.current.offsetLeft + targetNode.offsetLeft, y: searchBarRef.current.offsetTop - cardHeight - 90, scale: 1 })
+        setMovingBorderPos({ x: targetNode.offsetLeft, width: targetNode.offsetWidth + 4 })
+    }, [currentButton])
 
 
     const handleTokenSelect = (ticker) => {
@@ -188,9 +192,9 @@ export default function SearchBar() {
     return (
         <>
             <AnimatePresence>
-                <FloatingCard animate={translation} > <motion.div layoutId="asdf" ref={floatingCardRef}>{renderContent()} </motion.div></FloatingCard>
+                <FloatingCard animate={translation} transition={{ bounce: 0 }}> <motion.div layoutId="asdf" ref={floatingCardRef}>{renderContent()} </motion.div></FloatingCard>
             </AnimatePresence>
-            <SearchBarWrapper active={isActive}>
+            <SearchBarWrapper active={isActive} ref={searchBarRef}>
                 <MovingBorder layoutId="border" animate={movingBorderPos} transition={{ bounce: 0 }} />
                 <ButtonWrapper onClick={handleClick('token')} active={currentButton === 'token'} ref={tokenRef} >
                     <motion.div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any token</motion.div>
@@ -198,12 +202,12 @@ export default function SearchBar() {
                 </ButtonWrapper>
                 <ButtonWrapper onClick={handleClick('chain')} active={currentButton === 'chain'} ref={chainRef} style={{ margin: isActive ? '0 2px' : 0 }}>
                     <motion.div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any Chain</motion.div>
-                    {isActive && <div style={{ display: 'block', fontSize: '18px' }}>{selectedChain === '' ? 'Select Chain' : selectedChain}</div>}
+                    {isActive && <motion.div style={{ display: 'block', fontSize: '18px' }}>{selectedChain === '' ? 'Select Chain' : selectedChain}</motion.div>}
                 </ButtonWrapper>
                 <ButtonWrapper style={{ flex: 2, width: '100%', flexDirection: 'row' }} active={currentButton === 'amount'} onClick={handleClick('amount')} ref={amountRef}>
                     <motion.div style={{ flex: '1', display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center', alignItems: 'flex-start' }}>
                         <motion.div style={{ opacity: isActive ? '0.5' : '1', fontSize: '20px' }}>Any amount</motion.div>
-                        {isActive && <div style={{ fontSize: '18px' }}>Filter by amount</div>}
+                        {isActive && <motion.div style={{ fontSize: '18px' }}>Filter by amount</motion.div>}
                     </motion.div>
                     <SearchButton active={isActive}>
                         <img src={SearchIcon} />
