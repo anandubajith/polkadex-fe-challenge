@@ -148,7 +148,7 @@ export default function SearchBar() {
         if (currentButton === '') {
             const { offsetLeft, offsetWidth, offsetTop, offsetHeight } = searchBarRef.current;
             setTranslation({ scale: 0, x: offsetLeft + (offsetWidth / 2), y: offsetTop - (offsetHeight / 2) })
-            setMovingBorderPos({ x: 0, width: 'calc(100% + 4px)' }) // todo: remove extra 4px
+            setMovingBorderPos({ x: 0, width: 'calc(100% + 4px)' }) // 4px = 2 * 2px border
             return;
         };
         // todo: consider cardWidth?
@@ -184,8 +184,8 @@ export default function SearchBar() {
             goToCard('chain')
             return;
         }
-
         alert(JSON.stringify({ selectedToken, selectedChain, amount }))
+        goToCard('') // to hide the card
     }
 
     const renderContent = () => {
