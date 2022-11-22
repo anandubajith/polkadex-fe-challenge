@@ -1,5 +1,4 @@
 # TODO
-- Convert to react-hook-form
-- polish
-- refactor
-- more animations
+- migrate to react-hook-form and add validation/error state
+- Polish
+- Smoothen animations
