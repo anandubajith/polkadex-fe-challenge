@@ -35,8 +35,6 @@ const ButtonWrapper = styled(motion.div)`
     color: #fff;
     padding: 12px 24px;
     background-clip: padding-box;
-    border-top: 2px solid transparent;
-    border-right: 2px solid rgba(139, 161, 190, 0.2) ;
     border-radius: 24px;
     position: relative;
     display: flex;
@@ -45,7 +43,7 @@ const ButtonWrapper = styled(motion.div)`
     z-index: 4;
     text-align: left;
     align-items: flex-start;
-    ${({ active }) => !active && `border-radius: 0;`}
+    ${({ active }) => !active && `border-radius: 0;border-right: 2px solid rgba(139, 161, 190, 0.2);`}
 `;
 
 const TokenButtonWrapper = styled(ButtonWrapper)`
