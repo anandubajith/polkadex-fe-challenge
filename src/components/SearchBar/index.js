@@ -66,13 +66,18 @@ const AmountButtonWrapperInner = styled.div`
     align-items: flex-start
 `
 
+
 const MovingBorder = styled(motion.div)`
     position: absolute;
     top: 0; right: 0; bottom: 0; left: 0;
-    z-index: -1;
+    pointer-events: none;
+    z-index: 10;
     margin: -2px;
-    border-radius: inherit;
-    background: linear-gradient(to right, #E6007A, #6745D2);
+    border-radius: 24px;
+    border: 2px solid transparent;
+    background: linear-gradient(45deg,#E6007A, #6745D2) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;  mask-composite: exclude;
 `
 
 const FloatingCard = styled(motion.div)`
@@ -222,7 +227,9 @@ export default function SearchBar() {
             </AnimatePresence>
             <SearchBarWrapper active={isActive} ref={searchBarRef}>
                 <MovingBorder layoutId="border" animate={movingBorderPos} transition={{ bounce: 0 }} />
-                <TokenButtonWrapper onClick={handleClick('token')} active={currentButton === 'token'} ref={tokenRef} >
+                <TokenButtonWrapper
+                    onClick={handleClick('token')} active={currentButton === 'token'} ref={tokenRef}
+                    animate={{ borderRight: isActive ? 0 : '2px solid rgba(139, 161, 190, 0.2)' }} >
                     <ButtonContent
                         active={isActive} label="Any token"
                         placeholder="Select Token" value={selectedToken} />
@@ -230,7 +237,7 @@ export default function SearchBar() {
                 <ButtonWrapper
                     onClick={handleClick('chain')}
                     active={currentButton === 'chain'} ref={chainRef}
-                    animate={{ margin: isActive ? '0 2px' : 0 }}>
+                    animate={{ margin: isActive ? '0 2px' : 0, borderRight: isActive ? 0 : '2px solid rgba(139, 161, 190, 0.2)' }}>
                     <ButtonContent
                         active={isActive} label="Any Chain"
                         placeholder="Select Chain" value={selectedChain} />
