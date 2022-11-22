@@ -155,17 +155,33 @@ export default function SearchBar() {
         setMovingBorderPos({ x: targetNode.offsetLeft, width: targetNode.offsetWidth + 4 })
     }, [currentButton])
 
+    const goToCard = (card) => {
+        if (currentButton == card) return;
+        handleClick(card)();
+    }
 
     const handleTokenSelect = (ticker) => {
         setSelectedToken(ticker)
-        handleClick('chain')()
+        goToCard('chain')
     }
     const handleChainSelect = (chain) => {
         setSelectedChain(chain);
-        handleClick('amount')()
+        goToCard('amount')
     }
 
-    const handleSearch = () => {
+    const handleSearch = (e) => {
+        e.stopPropagation();
+        if (!selectedToken) {
+            alert("Choose token")
+            goToCard('token')
+            return;
+        }
+        if (!selectedChain) {
+            alert("Choose chain")
+            goToCard('chain')
+            return;
+        }
+
         alert(JSON.stringify({ selectedToken, selectedChain, amount }))
     }
 
