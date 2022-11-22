@@ -1,3 +1,8 @@
+# Polkadex Frontend Challenge
+
+### Demo
+- Open https://delicate-jelly-def7d4.netlify.app/
+
 ### Instructions
 ```
 $ npm install

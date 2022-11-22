@@ -156,7 +156,7 @@ export default function SearchBar() {
     }, [currentButton])
 
     const goToCard = (card) => {
-        if (currentButton == card) return;
+        if (currentButton === card) return;
         handleClick(card)();
     }
 
