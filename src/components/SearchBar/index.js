@@ -129,12 +129,12 @@ export default function SearchBar() {
         setTranslation({ x: element.offsetLeft, y: element.offsetTop - 300 })
     }, [searchBarRef])
 
-
     const getTargetNode = (button) => {
         if (button === 'token') return tokenRef.current;
         if (button === 'chain') return chainRef.current;
         if (button === 'amount') return amountRef.current;
     }
+
     const handleClick = (button) => () => {
         if (currentButton === button) {
             setCurrentButton('');
@@ -167,6 +167,10 @@ export default function SearchBar() {
         handleClick('amount')()
     }
 
+    const handleSearch = () => {
+        alert(JSON.stringify({ selectedToken, selectedChain, amount }))
+    }
+
     const renderContent = () => {
         if (currentButton === 'token') {
             return (
@@ -191,10 +195,6 @@ export default function SearchBar() {
             )
         }
         return <h1>{currentButton}</h1>
-    }
-
-    const handleSearch = () => {
-        alert(JSON.stringify({ selectedToken, selectedChain, amount }))
     }
 
     return (
