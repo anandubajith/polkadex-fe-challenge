@@ -55,7 +55,7 @@ const AmountButtonWrapper = styled(ButtonWrapper)`
     flex: 2;
     width: 100%;
     flex-direction: row;
-    ${({ active }) => !active && `border-top-right-radius: 24px;border-bottom-right-radius: 24px;`}
+    ${({ active }) => !active && `border-top-right-radius: 24px;border-bottom-right-radius: 24px;border-right:0`}
 `
 const AmountButtonWrapperInner = styled.div`
     flex: 1;
@@ -214,7 +214,7 @@ export default function SearchBar() {
     return (
         <>
             <AnimatePresence>
-                <FloatingCard animate={translation} transition={{ bounce: 0 }}>
+                <FloatingCard animate={translation} transition={{ bounce: 0 }} >
                     <motion.div layoutId="card-content" ref={floatingCardRef}>
                         {renderContent()}
                     </motion.div>
