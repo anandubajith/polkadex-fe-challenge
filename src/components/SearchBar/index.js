@@ -16,8 +16,7 @@ const SearchBarWrapper = styled(motion.div)`
     text-align: left;
     z-index: 1000;
     background: #000;
-    background-clip: padding-box;
-    border: solid 2px transparent;
+    border: 2px solid  rgba(139, 161, 190, 0.2);
     border-radius: 24px;
     position: relative;
     display: grid;
@@ -39,7 +38,6 @@ const ButtonWrapper = styled(motion.div)`
     position: relative;
     display: flex;
     flex-direction: column;
-    background: #000;
     z-index: 4;
     text-align: left;
     align-items: flex-start;
@@ -150,7 +148,7 @@ export default function SearchBar() {
         if (currentButton === '') {
             const { offsetLeft, offsetWidth, offsetTop, offsetHeight } = searchBarRef.current;
             setTranslation({ scale: 0, x: offsetLeft + (offsetWidth / 2), y: offsetTop - (offsetHeight / 2) })
-            setMovingBorderPos({ x: 0, width: '100%' })
+            setMovingBorderPos({ x: 0, width: 'calc(100% + 4px)' }) // todo: remove extra 4px
             return;
         };
         // todo: consider cardWidth?
