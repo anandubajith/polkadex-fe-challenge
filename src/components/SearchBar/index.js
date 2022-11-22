@@ -176,6 +176,10 @@ export default function SearchBar() {
         return <h1>{currentButton}</h1>
     }
 
+    const handleSearch = () => {
+        alert(JSON.stringify({selectedToken, selectedChain, amount}))
+    }
+
     return (
         <>
             <AnimatePresence>
@@ -207,7 +211,7 @@ export default function SearchBar() {
                     <div style={{ flex: '1', display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center', alignItems: 'flex-start' }}>
                         <ButtonContent active={isActive} label="Any amount" placeholder="Filter by amount" value="" />
                     </div>
-                    <SearchButton active={isActive} />
+                    <SearchButton active={isActive} onClick={handleSearch}/>
                 </ButtonWrapper>
             </SearchBarWrapper>
         </>

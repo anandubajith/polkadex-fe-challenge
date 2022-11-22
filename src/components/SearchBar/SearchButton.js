@@ -20,11 +20,12 @@ const SearchButtonWrapper = styled(motion.button)`
     ${({ active }) => `img { margin-right: ${active ? '8px' : '0px'}; }`}
 `;
 
-export default function SearchButton({ active }) {
+export default function SearchButton({ active, ...rest}) {
     return (
         <SearchButtonWrapper
             active={active}
             animate={active ? { background: '#e6007a', width: '120px' } : { background: 'rgba(139, 161, 190, 0.2)', width: '58px' }}
+            {...rest}
         >
             <img src={SearchIcon} alt="Search Icon" /> {active ? 'Search' : null}
         </SearchButtonWrapper>
