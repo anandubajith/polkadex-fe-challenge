@@ -7,7 +7,9 @@ $ # open http://localhost:3000/
 
 ### Screenshots
 
-![](./screenshots/video.mov)
+
+https://user-images.githubusercontent.com/3852827/203331323-82e8ff5d-8dee-49f6-aacc-a1164c937962.mp4
+
 
 | | |
 |-|-|
