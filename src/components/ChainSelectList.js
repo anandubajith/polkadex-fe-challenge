@@ -29,7 +29,7 @@ export default function ChainSelectList({ selectedChain, onChange }) {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             {
                 CHAINS.map(chain => (
-                    <ChainSelectButton active={selectedChain == chain} onClick={() => onChange(chain)}>
+                    <ChainSelectButton active={selectedChain === chain} key={chain} onClick={() => onChange(chain)}>
                         <Dot active={selectedChain === chain} /> {chain}
                     </ChainSelectButton>
                 ))

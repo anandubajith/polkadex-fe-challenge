@@ -44,8 +44,8 @@ export default function TokenCardList({ selectedToken, onChange }) {
         <div style={{ display: 'grid', gridTemplateColumns: '160px 160px', gridGap: '16px' }}>
             {
                 TOKENS.map((token) => (
-                    <TokenCard active={selectedToken == token.ticker} onClick={() => onChange(token.ticker)}>
-                        <img src={token.image} />
+                    <TokenCard active={selectedToken === token.ticker} key={token.ticker} onClick={() => onChange(token.ticker)}>
+                        <img src={token.image} alt={`${token.name} logo`}/>
                         <h4 style={{ margin: 0 }}>{token.name}</h4>
                         <h5 style={{ margin: 0 }}>{token.ticker}</h5>
                     </TokenCard>

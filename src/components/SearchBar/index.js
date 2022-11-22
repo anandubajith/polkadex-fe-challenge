@@ -99,18 +99,17 @@ export default function SearchBar() {
         const element = searchBarRef.current;
         console.log(element.offsetLeft);
         console.log(element.offsetTop);
-        setTranslation({ ...translation, x: element.offsetLeft, y: element.offsetTop - 300 })
-
+        setTranslation({ x: element.offsetLeft, y: element.offsetTop - 300 })
     }, [searchBarRef])
 
 
     const getTargetNode = (button) => {
-        if (button == 'token') return tokenRef.current;
-        if (button == 'chain') return chainRef.current;
-        if (button == 'amount') return amountRef.current;
+        if (button === 'token') return tokenRef.current;
+        if (button === 'chain') return chainRef.current;
+        if (button === 'amount') return amountRef.current;
     }
     const handleClick = (button) => () => {
-        if (currentButton == button) {
+        if (currentButton === button) {
             setCurrentButton('');
             return;
         }
@@ -118,7 +117,7 @@ export default function SearchBar() {
     }
 
     useEffect(() => {
-        if (currentButton == '') {
+        if (currentButton === '') {
             const { offsetLeft, offsetWidth, offsetTop, offsetHeight } = searchBarRef.current;
             setTranslation({ scale: 0, x: offsetLeft + (offsetWidth / 2), y: offsetTop - (offsetHeight / 2) })
             setMovingBorderPos({ x: 0, width: 'calc(100% + 4px)' })
@@ -127,7 +126,7 @@ export default function SearchBar() {
         // todo: consider cardWidth?
         const { offsetHeight: cardHeight } = floatingCardRef.current;
         const targetNode = getTargetNode(currentButton)
-        setTranslation({ ...translation, x: searchBarRef.current.offsetLeft + targetNode.offsetLeft, y: searchBarRef.current.offsetTop - cardHeight - 90, scale: 1 })
+        setTranslation({  x: searchBarRef.current.offsetLeft + targetNode.offsetLeft, y: searchBarRef.current.offsetTop - cardHeight - 90, scale: 1 })
         setMovingBorderPos({ x: targetNode.offsetLeft, width: targetNode.offsetWidth + 4 })
     }, [currentButton])
 

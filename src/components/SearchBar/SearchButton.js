@@ -26,7 +26,7 @@ export default function SearchButton({ active }) {
             active={active}
             animate={active ? { background: '#e6007a', width: '120px' } : { background: 'rgba(139, 161, 190, 0.2)', width: '58px' }}
         >
-            <img src={SearchIcon} /> {active ? 'Search' : null}
+            <img src={SearchIcon} alt="Search Icon" /> {active ? 'Search' : null}
         </SearchButtonWrapper>
     )
 }
