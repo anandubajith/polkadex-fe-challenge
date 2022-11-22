@@ -45,11 +45,28 @@ const ButtonWrapper = styled(motion.div)`
     z-index: 4;
     text-align: left;
     align-items: flex-start;
-    &:last-of-type { padding-right: 12px; }
     ${({ active }) => !active && `border-radius: 0;`}
-    ${({ active }) => !active && `&:nth-child(2) { border-top-left-radius: 24px;border-bottom-left-radius: 24px;}`}
-    ${({ active }) => !active && `&:last-of-type { border-top-right-radius: 24px;border-bottom-right-radius: 24px;}`}
 `;
+
+const TokenButtonWrapper = styled(ButtonWrapper)`
+    ${({ active }) => !active && `border-top-left-radius: 24px;border-bottom-left-radius: 24px;`}
+`
+
+const AmountButtonWrapper = styled(ButtonWrapper)`
+    padding-right: 12px;
+    flex: 2;
+    width: 100%;
+    flex-direction: row;
+    ${({ active }) => !active && `border-top-right-radius: 24px;border-bottom-right-radius: 24px;`}
+`
+const AmountButtonWrapperInner = styled.div`
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    align-items: flex-start
+`
 
 const MovingBorder = styled(motion.div)`
     position: absolute;
@@ -177,7 +194,7 @@ export default function SearchBar() {
     }
 
     const handleSearch = () => {
-        alert(JSON.stringify({selectedToken, selectedChain, amount}))
+        alert(JSON.stringify({ selectedToken, selectedChain, amount }))
     }
 
     return (
@@ -191,11 +208,11 @@ export default function SearchBar() {
             </AnimatePresence>
             <SearchBarWrapper active={isActive} ref={searchBarRef}>
                 <MovingBorder layoutId="border" animate={movingBorderPos} transition={{ bounce: 0 }} />
-                <ButtonWrapper onClick={handleClick('token')} active={currentButton === 'token'} ref={tokenRef} >
+                <TokenButtonWrapper onClick={handleClick('token')} active={currentButton === 'token'} ref={tokenRef} >
                     <ButtonContent
                         active={isActive} label="Any token"
                         placeholder="Select Token" value={selectedToken} />
-                </ButtonWrapper>
+                </TokenButtonWrapper>
                 <ButtonWrapper
                     onClick={handleClick('chain')}
                     active={currentButton === 'chain'} ref={chainRef}
@@ -204,15 +221,14 @@ export default function SearchBar() {
                         active={isActive} label="Any Chain"
                         placeholder="Select Chain" value={selectedChain} />
                 </ButtonWrapper>
-                <ButtonWrapper
+                <AmountButtonWrapper
                     onClick={handleClick('amount')}
-                    active={currentButton === 'amount'} ref={amountRef}
-                    style={{ flex: 2, width: '100%', flexDirection: 'row' }}>
-                    <div style={{ flex: '1', display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center', alignItems: 'flex-start' }}>
+                    active={currentButton === 'amount'} ref={amountRef} >
+                    <AmountButtonWrapperInner>
                         <ButtonContent active={isActive} label="Any amount" placeholder="Filter by amount" value="" />
-                    </div>
-                    <SearchButton active={isActive} onClick={handleSearch}/>
-                </ButtonWrapper>
+                    </AmountButtonWrapperInner>
+                    <SearchButton active={isActive} onClick={handleSearch} />
+                </AmountButtonWrapper>
             </SearchBarWrapper>
         </>
     )
