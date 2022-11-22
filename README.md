@@ -13,7 +13,8 @@ $ # open http://localhost:3000/
 ### Screenshots
 
 
-https://user-images.githubusercontent.com/3852827/203331323-82e8ff5d-8dee-49f6-aacc-a1164c937962.mp4
+https://user-images.githubusercontent.com/3852827/203351986-2b835b60-71ee-462a-9e95-2fc194c5fc07.mov
+
 
 
 | | |
